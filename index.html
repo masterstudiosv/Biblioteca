@@ -1,326 +1,502 @@
-import React, { useState } from 'react';
-import { Upload, Download, Eye, Book, Calendar, FileText, Plus, X, Search } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Virtual</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-const VirtualLibraryPortal = () => {
-  const [books, setBooks] = useState([]);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [selectedBook, setSelectedBook] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [newBook, setNewBook] = useState({
-    title: '',
-    author: '',
-    publishDate: '',
-    description: '',
-    file: null,
-    fileUrl: null
-  });
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (file && file.type === 'application/pdf') {
-      const fileUrl = URL.createObjectURL(file);
-      setNewBook({
-        ...newBook,
-        file: file,
-        fileUrl: fileUrl
-      });
-    } else {
-      alert('Por favor, selecciona solo archivos PDF');
-    }
-  };
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem 0;
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
 
-  const addBook = () => {
-    if (newBook.title && newBook.author && newBook.file) {
-      const bookWithId = {
-        ...newBook,
-        id: Date.now(),
-        uploadDate: new Date().toLocaleDateString('es-ES')
-      };
-      setBooks([...books, bookWithId]);
-      setNewBook({
-        title: '',
-        author: '',
-        publishDate: '',
-        description: '',
-        file: null,
-        fileUrl: null
-      });
-      setShowAddModal(false);
-    } else {
-      alert('Por favor, completa todos los campos obligatorios');
-    }
-  };
+        .header h1 {
+            color: white;
+            font-weight: 700;
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 0.5rem;
+        }
 
-  const downloadBook = (book) => {
-    if (book.fileUrl) {
-      const link = document.createElement('a');
-      link.href = book.fileUrl;
-      link.download = `${book.title}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-  };
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+        }
 
-  const filteredBooks = books.filter(book =>
-    book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    book.author.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+        .search-container {
+            max-width: 700px;
+            margin: 2rem auto;
+        }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800">
-      {/* Header */}
-      <header className="bg-black/20 backdrop-blur-lg border-b border-white/10">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
-                <Book className="w-8 h-8 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-white">Biblioteca Virtual</h1>
-                <p className="text-blue-200">Portal de Documentos Digitales</p>
-              </div>
-            </div>
-            <button
-              onClick={() => setShowAddModal(true)}
-              className="flex items-center space-x-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-6 py-3 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
-            >
-              <Plus className="w-5 h-5" />
-              <span>Agregar Libro</span>
-            </button>
-          </div>
+        .search-wrapper {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: #667eea;
+        }
+
+        .books-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem 2rem;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .book-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .book-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .book-icon {
+            font-size: 5rem;
+            color: white;
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
+        }
+
+        .book-body {
+            padding: 2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .book-title {
+            color: #667eea;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .book-author {
+            color: #764ba2;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .book-year {
+            color: #888;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .book-description {
+            color: #555;
+            line-height: 1.6;
+            flex-grow: 1;
+            margin-bottom: 1.5rem;
+        }
+
+        .book-footer {
+            display: flex;
+            gap: 1rem;
+            padding: 0;
+        }
+
+        .btn-view {
+            flex: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-view:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        .btn-download {
+            flex: 1;
+            background: white;
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-download:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .modal-content {
+            border-radius: 20px;
+            overflow: hidden;
+            border: none;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1.5rem;
+        }
+
+        .modal-title {
+            font-weight: 700;
+        }
+
+        .btn-close {
+            filter: brightness(0) invert(1);
+        }
+
+        .modal-body {
+            padding: 0;
+            background: #f8f9fa;
+        }
+
+        .pdf-viewer {
+            width: 100%;
+            height: 75vh;
+            border: none;
+        }
+
+        .modal-footer {
+            background: #f8f9fa;
+            border: none;
+            padding: 1.5rem;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: white;
+        }
+
+        .no-results i {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+
+        .no-results h3 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .book-footer {
+                flex-direction: column;
+            }
+
+            .pdf-viewer {
+                height: 60vh;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="container text-center">
+            <h1><i class="bi bi-book-half"></i> Biblioteca Virtual</h1>
+            <p>Descubre, explora y disfruta de nuestra colección digital</p>
         </div>
-      </header>
-
-      <div className="container mx-auto px-6 py-8">
-        {/* Search Bar */}
-        <div className="mb-8">
-          <div className="relative max-w-md mx-auto">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
-              type="text"
-              placeholder="Buscar libros o autores..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50"
-            />
-          </div>
-        </div>
-
-        {/* Books Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredBooks.map((book) => (
-            <div key={book.id} className="bg-white/10 backdrop-blur-lg rounded-xl border border-white/20 overflow-hidden hover:bg-white/15 transition-all duration-300 shadow-lg hover:shadow-2xl transform hover:scale-105">
-              <div className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="p-2 bg-gradient-to-r from-orange-500 to-red-600 rounded-lg">
-                    <FileText className="w-6 h-6 text-white" />
-                  </div>
-                  <span className="px-2 py-1 bg-blue-500/20 text-blue-200 rounded-full text-xs">PDF</span>
-                </div>
-                
-                <h3 className="text-xl font-bold text-white mb-2 line-clamp-2">{book.title}</h3>
-                <p className="text-blue-200 mb-2">Por: {book.author}</p>
-                
-                {book.description && (
-                  <p className="text-gray-300 text-sm mb-4 line-clamp-3">{book.description}</p>
-                )}
-                
-                <div className="flex items-center space-x-4 text-sm text-gray-300 mb-4">
-                  <div className="flex items-center space-x-1">
-                    <Calendar className="w-4 h-4" />
-                    <span>{book.publishDate || book.uploadDate}</span>
-                  </div>
-                </div>
-                
-                <div className="flex space-x-2">
-                  <button
-                    onClick={() => setSelectedBook(book)}
-                    className="flex-1 flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-4 py-2 rounded-lg transition-all duration-300"
-                  >
-                    <Eye className="w-4 h-4" />
-                    <span>Ver</span>
-                  </button>
-                  <button
-                    onClick={() => downloadBook(book)}
-                    className="flex-1 flex items-center justify-center space-x-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-4 py-2 rounded-lg transition-all duration-300"
-                  >
-                    <Download className="w-4 h-4" />
-                    <span>Descargar</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Empty State */}
-        {books.length === 0 && (
-          <div className="text-center py-16">
-            <div className="p-4 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full w-20 h-20 mx-auto mb-6">
-              <Book className="w-12 h-12 text-white mx-auto" />
-            </div>
-            <h3 className="text-2xl font-bold text-white mb-2">Biblioteca Vacía</h3>
-            <p className="text-gray-300 mb-6">Comienza agregando tu primer libro a la biblioteca</p>
-            <button
-              onClick={() => setShowAddModal(true)}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-3 rounded-lg transition-all duration-300"
-            >
-              Agregar Primer Libro
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* Add Book Modal */}
-      {showAddModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white/10 backdrop-blur-lg rounded-xl border border-white/20 max-w-md w-full">
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-white">Agregar Libro</h2>
-                <button
-                  onClick={() => setShowAddModal(false)}
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-              
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Título *</label>
-                  <input
-                    type="text"
-                    value={newBook.title}
-                    onChange={(e) => setNewBook({...newBook, title: e.target.value})}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400"
-                    placeholder="Título del libro"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Autor *</label>
-                  <input
-                    type="text"
-                    value={newBook.author}
-                    onChange={(e) => setNewBook({...newBook, author: e.target.value})}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400"
-                    placeholder="Nombre del autor"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Fecha de Publicación</label>
-                  <input
-                    type="date"
-                    value={newBook.publishDate}
-                    onChange={(e) => setNewBook({...newBook, publishDate: e.target.value})}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-blue-400"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Descripción</label>
-                  <textarea
-                    value={newBook.description}
-                    onChange={(e) => setNewBook({...newBook, description: e.target.value})}
-                    rows="3"
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400"
-                    placeholder="Descripción breve del libro"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">Archivo PDF *</label>
-                  <div className="relative">
-                    <input
-                      type="file"
-                      accept=".pdf"
-                      onChange={handleFileUpload}
-                      className="hidden"
-                      id="pdf-upload"
-                    />
-                    <label
-                      htmlFor="pdf-upload"
-                      className="flex items-center justify-center w-full px-4 py-8 bg-white/5 border-2 border-dashed border-white/20 rounded-lg cursor-pointer hover:bg-white/10 transition-colors"
-                    >
-                      <div className="text-center">
-                        <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                        <span className="text-gray-300">
-                          {newBook.file ? newBook.file.name : 'Haz clic para subir un PDF'}
-                        </span>
-                      </div>
-                    </label>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="flex space-x-3 mt-6">
-                <button
-                  onClick={() => setShowAddModal(false)}
-                  className="flex-1 px-4 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
-                >
-                  Cancelar
-                </button>
-                <button
-                  onClick={addBook}
-                  className="flex-1 px-4 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-lg transition-all duration-300"
-                >
-                  Agregar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* PDF Viewer Modal */}
-      {selectedBook && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl max-w-4xl w-full h-[90vh] flex flex-col">
-            <div className="p-4 border-b bg-gray-50 rounded-t-xl">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-xl font-bold text-gray-800">{selectedBook.title}</h3>
-                  <p className="text-gray-600">Por: {selectedBook.author}</p>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <button
-                    onClick={() => downloadBook(selectedBook)}
-                    className="flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
-                  >
-                    <Download className="w-4 h-4" />
-                    <span>Descargar</span>
-                  </button>
-                  <button
-                    onClick={() => setSelectedBook(null)}
-                    className="text-gray-600 hover:text-gray-800 transition-colors"
-                  >
-                    <X className="w-6 h-6" />
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="flex-1 p-4">
-              {selectedBook.fileUrl ? (
-                <iframe
-                  src={selectedBook.fileUrl}
-                  className="w-full h-full rounded-lg border"
-                  title={selectedBook.title}
-                />
-              ) : (
-                <div className="flex items-center justify-center h-full">
-                  <p className="text-gray-500">No se puede cargar el visor de PDF</p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
-  );
-};
 
-export default VirtualLibraryPortal;
+    <div class="search-container">
+        <div class="container">
+            <div class="search-wrapper">
+                <i class="bi bi-search search-icon"></i>
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    id="searchInput" 
+                    placeholder="Buscar por título o autor...">
+            </div>
+        </div>
+    </div>
+
+    <div class="books-container">
+        <div class="row g-4" id="booksContainer"></div>
+        <div id="noResults" class="no-results d-none">
+            <i class="bi bi-emoji-frown"></i>
+            <h3>No se encontraron resultados</h3>
+            <p>Intenta con otros términos de búsqueda</p>
+        </div>
+    </div>
+
+    <div class="modal fade" id="pdfModal" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pdfModalLabel">
+                        <i class="bi bi-file-pdf"></i> Visualizador de PDF
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <embed id="pdfViewer" class="pdf-viewer" type="application/pdf">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <a id="downloadPdfBtn" href="#" class="btn btn-primary" download>
+                        <i class="bi bi-download"></i> Descargar PDF
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <p class="mb-0">© 2025 Biblioteca Virtual - Todos los derechos reservados</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const books = [
+            {
+                title: "Cien Años de Soledad",
+                author: "Gabriel García Márquez",
+                year: "1967",
+                description: "Una obra maestra de la literatura latinoamericana que narra la historia de la familia Buendía a lo largo de varias generaciones en el pueblo ficticio de Macondo.",
+                file: "cien-años-soledad.pdf"
+            },
+            {
+                title: "El Principito",
+                author: "Antoine de Saint-Exupéry",
+                year: "1943",
+                description: "Un cuento poético que reflexiona sobre temas profundos de la vida humana como el sentido de la vida, la amistad y el amor a través de la historia de un pequeño príncipe.",
+                file: "el-principito.pdf"
+            },
+            {
+                title: "Don Quijote de la Mancha",
+                author: "Miguel de Cervantes",
+                year: "1605",
+                description: "La obra cumbre de la literatura española que narra las aventuras de un hidalgo que pierde la razón y decide convertirse en caballero andante.",
+                file: "don-quijote.pdf"
+            },
+            {
+                title: "Programación en JavaScript",
+                author: "Carlos Rodríguez",
+                year: "2023",
+                description: "Guía completa para aprender JavaScript moderno desde cero, incluyendo ES6+, programación asíncrona, frameworks y mejores prácticas de desarrollo.",
+                file: "javascript-moderno.pdf"
+            },
+            {
+                title: "Historia del Arte",
+                author: "María López García",
+                year: "2021",
+                description: "Un recorrido exhaustivo por los movimientos artísticos más importantes de la historia, desde las pinturas rupestres hasta el arte contemporáneo.",
+                file: "historia-arte.pdf"
+            },
+            {
+                title: "Inteligencia Artificial",
+                author: "Dr. Roberto Fernández",
+                year: "2024",
+                description: "Introducción completa a la inteligencia artificial, machine learning y deep learning con ejemplos prácticos y aplicaciones del mundo real.",
+                file: "inteligencia-artificial.pdf"
+            }
+        ];
+
+        function renderBooks(booksToRender) {
+            const container = document.getElementById('booksContainer');
+            const noResults = document.getElementById('noResults');
+            
+            container.innerHTML = '';
+            
+            if (booksToRender.length === 0) {
+                noResults.classList.remove('d-none');
+                return;
+            }
+            
+            noResults.classList.add('d-none');
+            
+            booksToRender.forEach(book => {
+                const col = document.createElement('div');
+                col.className = 'col-12 col-md-6 col-lg-4';
+                
+                col.innerHTML = `
+                    <div class="book-card">
+                        <div class="book-header">
+                            <i class="bi bi-book-fill book-icon"></i>
+                        </div>
+                        <div class="book-body">
+                            <h3 class="book-title">${book.title}</h3>
+                            <div class="book-author">
+                                <i class="bi bi-person-fill"></i>
+                                ${book.author}
+                            </div>
+                            <div class="book-year">
+                                <i class="bi bi-calendar-event"></i>
+                                ${book.year}
+                            </div>
+                            <p class="book-description">${book.description}</p>
+                            <div class="book-footer">
+                                <button class="btn-view" onclick="openPdf('${book.file}', '${book.title}')">
+                                    <i class="bi bi-eye"></i> Ver PDF
+                                </button>
+                                <a href="${book.file}" class="btn-download" download="${book.title}.pdf">
+                                    <i class="bi bi-download"></i> Descargar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(col);
+            });
+        }
+
+        function openPdf(filename, title) {
+            const pdfViewer = document.getElementById('pdfViewer');
+            const modalTitle = document.getElementById('pdfModalLabel');
+            const downloadBtn = document.getElementById('downloadPdfBtn');
+            
+            pdfViewer.src = filename;
+            modalTitle.innerHTML = `<i class="bi bi-file-pdf"></i> ${title}`;
+            downloadBtn.href = filename;
+            downloadBtn.download = `${title}.pdf`;
+            
+            const modal = new bootstrap.Modal(document.getElementById('pdfModal'));
+            modal.show();
+        }
+
+        function searchBooks(query) {
+            const searchTerm = query.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                renderBooks(books);
+                return;
+            }
+            
+            const filteredBooks = books.filter(book => {
+                return book.title.toLowerCase().includes(searchTerm) || 
+                       book.author.toLowerCase().includes(searchTerm);
+            });
+            
+            renderBooks(filteredBooks);
+        }
+
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            searchBooks(e.target.value);
+        });
+
+        document.getElementById('pdfModal').addEventListener('hidden.bs.modal', function() {
+            document.getElementById('pdfViewer').src = '';
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderBooks(books);
+        });
+    </script>
+
+</body>
+</html>
