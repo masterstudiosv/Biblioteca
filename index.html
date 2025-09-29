@@ -99,15 +99,61 @@
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
         }
 
-        .book-header {
+        .book-cover-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            overflow: hidden;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 3rem 2rem;
-            text-align: center;
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .book-card:hover .book-cover {
+            transform: scale(1.05);
+        }
+
+        .book-cover-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.7) 100%);
+            display: flex;
+            align-items: flex-end;
+            padding: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .book-card:hover .book-cover-overlay {
+            opacity: 1;
+        }
+
+        .overlay-text {
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .book-cover-fallback {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             position: relative;
             overflow: hidden;
         }
 
-        .book-header::before {
+        .book-cover-fallback::before {
             content: '';
             position: absolute;
             top: -50%;
@@ -123,8 +169,8 @@
             50% { transform: scale(1.1); }
         }
 
-        .book-icon {
-            font-size: 5rem;
+        .book-icon-large {
+            font-size: 6rem;
             color: white;
             position: relative;
             z-index: 1;
@@ -143,6 +189,7 @@
             font-weight: 700;
             font-size: 1.5rem;
             margin-bottom: 1rem;
+            line-height: 1.3;
         }
 
         .book-author {
@@ -289,6 +336,10 @@
                 font-size: 2rem;
             }
 
+            .book-cover-container {
+                height: 280px;
+            }
+
             .book-footer {
                 flex-direction: column;
             }
@@ -363,46 +414,52 @@
     <script>
         const books = [
             {
-                title: "Tiempo Medio",
+                title: "Medio Tiempo",
                 author: "Marvin Hurtado",
                 year: "2025",
                 description: "Una obra maestra de la literatura latinoamericana que narra la historia de la familia Buendía a lo largo de varias generaciones en el pueblo ficticio de Macondo.",
-                file: "Tiempo medio.pdf"
+                file: "Tiempo Medio.pdf",
+                cover: "Medio tiempo.png"
             },
             {
                 title: "El Principito",
                 author: "Antoine de Saint-Exupéry",
                 year: "1943",
                 description: "Un cuento poético que reflexiona sobre temas profundos de la vida humana como el sentido de la vida, la amistad y el amor a través de la historia de un pequeño príncipe.",
-                file: "el-principito.pdf"
+                file: "el-principito.pdf",
+                cover: "portada2.jpg"
             },
             {
                 title: "Don Quijote de la Mancha",
                 author: "Miguel de Cervantes",
                 year: "1605",
                 description: "La obra cumbre de la literatura española que narra las aventuras de un hidalgo que pierde la razón y decide convertirse en caballero andante.",
-                file: "don-quijote.pdf"
+                file: "don-quijote.pdf",
+                cover: ""
             },
             {
                 title: "Programación en JavaScript",
                 author: "Carlos Rodríguez",
                 year: "2023",
                 description: "Guía completa para aprender JavaScript moderno desde cero, incluyendo ES6+, programación asíncrona, frameworks y mejores prácticas de desarrollo.",
-                file: "javascript-moderno.pdf"
+                file: "javascript-moderno.pdf",
+                cover: "portada-js.png"
             },
             {
                 title: "Historia del Arte",
                 author: "María López García",
                 year: "2021",
                 description: "Un recorrido exhaustivo por los movimientos artísticos más importantes de la historia, desde las pinturas rupestres hasta el arte contemporáneo.",
-                file: "historia-arte.pdf"
+                file: "historia-arte.pdf",
+                cover: ""
             },
             {
                 title: "Inteligencia Artificial",
                 author: "Dr. Roberto Fernández",
                 year: "2024",
                 description: "Introducción completa a la inteligencia artificial, machine learning y deep learning con ejemplos prácticos y aplicaciones del mundo real.",
-                file: "inteligencia-artificial.pdf"
+                file: "inteligencia-artificial.pdf",
+                cover: "portada-ia.jpg"
             }
         ];
 
@@ -423,10 +480,19 @@
                 const col = document.createElement('div');
                 col.className = 'col-12 col-md-6 col-lg-4';
                 
+                const coverHTML = book.cover && book.cover.trim() !== '' 
+                    ? `<img src="${book.cover}" alt="${book.title}" class="book-cover" onerror="this.parentElement.innerHTML='<div class=book-cover-fallback><i class=\\'bi bi-book-fill book-icon-large\\'></i></div>'">
+                       <div class="book-cover-overlay">
+                           <span class="overlay-text"><i class="bi bi-eye"></i> Ver libro</span>
+                       </div>`
+                    : `<div class="book-cover-fallback">
+                           <i class="bi bi-book-fill book-icon-large"></i>
+                       </div>`;
+                
                 col.innerHTML = `
                     <div class="book-card">
-                        <div class="book-header">
-                            <i class="bi bi-book-fill book-icon"></i>
+                        <div class="book-cover-container">
+                            ${coverHTML}
                         </div>
                         <div class="book-body">
                             <h3 class="book-title">${book.title}</h3>
