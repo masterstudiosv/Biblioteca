@@ -5,7 +5,7 @@ const books = [
                 year: "2026",
                 description: "Un pedacito de lo que fuimos al inicio y de lo que somos ahora, contado desde lo que siento, sin prisa y con verdad.",
                 file: "libros/Aby pequeeee.pdf",
-                cover: "imagenes/sdd.jpg"
+                cover: "imágenes/sdd.jpg"
             },
             {
                 title: "Tu reflejo por el espejo",
@@ -13,7 +13,7 @@ const books = [
                 year: "2025",
                 description: "Una obra fascinante que explora los misterios del reflejo y la identidad a través de una narrativa cautivadora.",
                 file: "libros/Tu reflejo por el espejo.pdf",
-                cover: "imagenes/lis.png"
+                cover: "imágenes/lis.png"
             },
             {
                 title: "Una chica de noche",
@@ -21,7 +21,7 @@ const books = [
                 year: "2025",
                 description: "Una historia envolvente sobre el amor, los secretos y las decisiones que cambian vidas.",
                 file: "libros/Una chica de noche.pdf",
-                cover: "imagenes/Una chica de noche.jpg"
+                cover: "imágenes/Una chica de noche.jpg"
             },
             {
                 title: "Medio Tiempo",
@@ -29,7 +29,7 @@ const books = [
                 year: "2025",
                 description: "Libro de Romance que narra una historia de segundas oportunidades y nuevos comienzos.",
                 file: "libros/Tiempo medio.pdf",
-                cover: "imagenes/Medio tiempo.png"
+                cover: "imágenes/Medio tiempo.png"
             },
             {
                 title: "Destello de Luz",
@@ -37,7 +37,7 @@ const books = [
                 year: "2025",
                 description: "Una novela romántica que ilumina los momentos más oscuros con esperanza y amor verdadero.",
                 file: "libros/Destello de Luz.pdf",
-                cover: "imagenes/Destello de Luz.png"
+                cover: "imágenes/Destello de Luz.png"
             },
             {
                 title: "Abrazos que Hablan",
@@ -45,7 +45,7 @@ const books = [
                 year: "2025",
                 description: "Colección de poesía que celebra el poder del contacto humano y las emociones compartidas.",
                 file: "libros/Abrazos que Hablan.pdf",
-                cover: "imagenes/Poema.png"
+                cover: "imágenes/Poema.png"
             },
             {
                 title: "I Love",
@@ -53,7 +53,7 @@ const books = [
                 year: "2025",
                 description: "Una exploración profunda del amor en todas sus formas y manifestaciones.",
                 file: "libros/I LOVE.pdf",
-                cover: "imagenes/I LOVE.jpg"
+                cover: "imágenes/I LOVE.jpg"
             },
             {
                 title: "Tapestry de Amor Realidad y Fantasía en Un Solo Latido",
@@ -61,7 +61,7 @@ const books = [
                 year: "2025",
                 description: "Un tapiz literario que entrelaza lo real y lo imaginario en una danza romántica única.",
                 file: "libros/Tapestry de Amor Realidad y Fantasía en Un Solo Latido.pdf",
-                cover: "imagenes/Tapestry de Amor Realidad y Fantasía en Un Solo Latido.png"
+                cover: "imágenes/Tapestry de Amor Realidad y Fantasía en Un Solo Latido.png"
             },
             {
                 title: "La calma antes de lo incierto",
@@ -69,7 +69,7 @@ const books = [
                 year: "2025",
                 description: "Una reflexión sobre los momentos de quietud que preceden a los grandes cambios de la vida.",
                 file: "libros/La calma antes de lo incierto.pdf",
-                cover: "imagenes/La calma antes de lo incierto.jpg"
+                cover: "imágenes/La calma antes de lo incierto.jpg"
             },
             {
                 title: "Ella y la banca que no olvida",
@@ -77,6 +77,6 @@ const books = [
                 year: "2025",
                 description: "Una historia emotiva sobre la memoria, los recuerdos y los lugares que guardan nuestras historias.",
                 file: "libros/Ella y la banca que no olvida.pdf",
-                cover: "imagenes/Ella y la banca que no olvida.jpg"
+                cover: "imágenes/Ella y la banca que no olvida.jpg"
             }
         ];
