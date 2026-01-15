@@ -4,7 +4,7 @@ const books = [
                 author: "Escritor Nocturna",
                 year: "2026",
                 description: "Un pedacito de lo que fuimos al inicio y de lo que somos ahora, contado desde lo que siento, sin prisa y con verdad.",
-                file: "Aby pequeeee.pdf",
+                file: "libros/Aby pequeeee.pdf",
                 cover: "sdd.j"
             },
             {
