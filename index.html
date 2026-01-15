@@ -3,381 +3,781 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biblioteca</title>
+    <title>Biblioteca Lunar</title>
     <link rel="icon" href="logo.png" type="image/png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Lato:wght@300;400;700&display=swap');
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        :root {
+            --primary-blue: #5b7bd5;
+            --primary-purple: #8b6fb0;
+            --accent-gold: #c9a36a;
+            --deep-purple: #4a3f6e;
+            --light-lavender: #e8e4f3;
+            --soft-cream: #faf8f5;
+            --dark-bg: #1a2332;
+            --text-dark: #2d2d2d;
+            --text-medium: #5a5a5a;
+            --text-light: #8c8c8c;
+        }
+
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(to bottom, var(--soft-cream) 0%, var(--light-lavender) 100%);
+            font-family: 'Lato', sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
             min-height: 100vh;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        /* Header */
         .header {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 2rem 0;
-            margin-bottom: 3rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-
-        .header h1 {
-            color: white;
-            font-weight: 700;
-            font-size: 3rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-            margin-bottom: 0.5rem;
-        }
-
-        .header p {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1.2rem;
-        }
-
-        .search-container {
-            max-width: 700px;
-            margin: 2rem auto;
-        }
-
-        .search-wrapper {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-purple) 50%, var(--deep-purple) 100%);
+            padding: 0;
             position: relative;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 1rem 1rem 1rem 3.5rem;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            background: white;
-            transition: all 0.3s ease;
-        }
-
-        .search-input:focus {
-            outline: none;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 1.2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.5rem;
-            color: #667eea;
-        }
-
-        .books-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem 4rem 2rem;
-        }
-
-        .book-card {
-            background: white;
-            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: all 0.4s ease;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
+            box-shadow: 0 4px 20px rgba(75, 59, 110, 0.3);
         }
 
-        .book-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-        }
-
-        .book-cover-container {
-            position: relative;
-            width: 100%;
-            height: 350px;
-            overflow: hidden;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .book-cover {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.4s ease;
-        }
-
-        .book-card:hover .book-cover {
-            transform: scale(1.05);
-        }
-
-        .book-cover-overlay {
+        .header::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.7) 100%);
+            background: radial-gradient(circle at 30% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+        }
+
+        .header-top {
+            background: rgba(0, 0, 0, 0.15);
+            padding: 0.875rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-top p {
+            color: rgba(255, 255, 255, 0.95);
+            margin: 0;
+            font-size: 0.875rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .header-main {
+            padding: 4rem 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-ornament {
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+            margin: 0 auto 1.75rem auto;
+            position: relative;
+        }
+
+        .header-ornament::before,
+        .header-ornament::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 0 10px rgba(201, 163, 106, 0.5);
+        }
+
+        .header-ornament::before {
+            left: -18px;
+        }
+
+        .header-ornament::after {
+            right: -18px;
+        }
+
+        .logo-text {
+            font-family: 'Merriweather', serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--soft-cream);
+            margin: 0;
+            letter-spacing: 0.05em;
+            text-shadow: 0 2px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .logo-subtitle {
+            font-family: 'Merriweather', serif;
+            font-size: 1.15rem;
+            color: var(--accent-gold);
+            font-weight: 300;
+            font-style: italic;
+            margin-top: 0.75rem;
+            letter-spacing: 0.02em;
+        }
+
+        /* Search */
+        .search-section {
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+            padding: 2.5rem 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-wrapper {
+            max-width: 750px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-box {
+            position: relative;
+            background: white;
+            border: 2px solid rgba(91, 123, 213, 0.2);
+            border-radius: 50px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(91, 123, 213, 0.1);
+        }
+
+        .search-box:focus-within {
+            border-color: var(--primary-blue);
+            box-shadow: 0 6px 25px rgba(91, 123, 213, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1.25rem 4.5rem 1.25rem 2rem;
+            border: none;
+            font-size: 1rem;
+            background: transparent;
+            color: var(--text-dark);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-light);
+        }
+
+        .search-input:focus {
+            outline: none;
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
             display: flex;
-            align-items: flex-end;
-            padding: 1.5rem;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(91, 123, 213, 0.3);
+        }
+
+        .search-btn:hover {
+            background: linear-gradient(135deg, var(--primary-purple), var(--deep-purple));
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        /* Books Section */
+        .books-section {
+            padding: 4rem 0 5rem 0;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-family: 'Merriweather', serif;
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--deep-purple);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-medium);
+            font-size: 1.05rem;
+            font-weight: 300;
+        }
+
+        /* Grid completamente responsivo */
+        .books-grid {
+            display: grid;
+            gap: 2rem;
+            padding: 0 1.5rem;
+        }
+
+        /* Móvil pequeño */
+        @media (max-width: 479px) {
+            .books-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+        }
+
+        /* Móvil grande */
+        @media (min-width: 480px) and (max-width: 767px) {
+            .books-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1.25rem;
+            }
+        }
+
+        /* Tablet */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .books-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 1.5rem;
+            }
+        }
+
+        /* Desktop pequeño */
+        @media (min-width: 1024px) and (max-width: 1279px) {
+            .books-grid {
+                grid-template-columns: repeat(5, 1fr);
+                gap: 1.75rem;
+            }
+        }
+
+        /* Desktop mediano */
+        @media (min-width: 1280px) and (max-width: 1599px) {
+            .books-grid {
+                grid-template-columns: repeat(6, 1fr);
+                gap: 2rem;
+            }
+        }
+
+        /* Desktop grande */
+        @media (min-width: 1600px) {
+            .books-grid {
+                grid-template-columns: repeat(7, 1fr);
+                gap: 2rem;
+            }
+        }
+
+        /* Book Card */
+        .book-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(91, 123, 213, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .book-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
             opacity: 0;
             transition: opacity 0.3s ease;
+            z-index: 1;
+            pointer-events: none;
         }
 
-        .book-card:hover .book-cover-overlay {
-            opacity: 1;
+        .book-card:hover {
+            transform: translateY(-12px) scale(1.03);
+            box-shadow: 0 15px 40px rgba(91, 123, 213, 0.25);
+            border-color: var(--primary-blue);
         }
 
-        .overlay-text {
+        .book-card:hover::before {
+            opacity: 0.03;
+        }
+
+        .book-cover-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 150%;
+            background: linear-gradient(135deg, #f0f0f5 0%, #e5e5ea 100%);
+            overflow: hidden;
+        }
+
+        .book-cover-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .book-card:hover .book-cover-img {
+            transform: scale(1.1);
+        }
+
+        .book-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: linear-gradient(135deg, var(--accent-gold) 0%, #d4a97a 100%);
             color: white;
-            font-weight: 600;
-            font-size: 1.1rem;
+            padding: 0.3rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 10px rgba(201, 163, 106, 0.4);
+            z-index: 2;
         }
 
         .book-cover-fallback {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .book-cover-fallback::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: pulse 4s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .book-icon-large {
-            font-size: 6rem;
-            color: white;
-            position: relative;
-            z-index: 1;
-            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
-        }
-
-        .book-body {
-            padding: 2rem;
-            flex-grow: 1;
-            display: flex;
             flex-direction: column;
-        }
-
-        .book-title {
-            color: #667eea;
-            font-weight: 700;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            line-height: 1.3;
-        }
-
-        .book-author {
-            color: #764ba2;
-            font-weight: 600;
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .book-year {
-            color: #888;
-            font-size: 0.95rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .book-description {
-            color: #555;
-            line-height: 1.6;
-            flex-grow: 1;
-            margin-bottom: 1.5rem;
-        }
-
-        .book-footer {
-            display: flex;
-            gap: 1rem;
-            padding: 0;
-        }
-
-        .btn-view {
-            flex: 1;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            color: white;
-            padding: 1rem;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-view:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
-            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-        }
-
-        .btn-download {
-            flex: 1;
-            background: white;
-            border: 2px solid #667eea;
-            color: #667eea;
-            padding: 1rem;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-purple) 100%);
+            padding: 1.5rem 1rem;
         }
 
-        .btn-download:hover {
-            background: #667eea;
+        .fallback-icon {
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0.75rem;
+        }
+
+        .fallback-title {
             color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.2;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .book-info {
+            padding: 1.25rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .book-title-text {
+            font-family: 'Merriweather', serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 2.6em;
+        }
+
+        .book-author-text {
+            color: var(--primary-purple);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .book-year-text {
+            color: var(--text-light);
+            font-size: 0.75rem;
+            font-weight: 400;
+        }
+
+        /* Modal tipo El Libro Total */
+        .modal-xl {
+            max-width: 95vw;
         }
 
         .modal-content {
-            border-radius: 20px;
-            overflow: hidden;
             border: none;
+            border-radius: 0;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            background: var(--dark-bg);
+            height: 95vh;
         }
 
         .modal-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--dark-bg);
             color: white;
             border: none;
-            padding: 1.5rem;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .modal-title {
-            font-weight: 700;
+            font-family: 'Merriweather', serif;
+            font-weight: 400;
+            font-size: 1.25rem;
+            color: var(--accent-gold);
         }
 
         .btn-close {
             filter: brightness(0) invert(1);
+            opacity: 0.9;
+        }
+
+        .btn-close:hover {
+            opacity: 1;
         }
 
         .modal-body {
             padding: 0;
-            background: #f8f9fa;
+            background: var(--dark-bg);
+            display: flex;
+            height: calc(95vh - 140px);
+        }
+
+        /* Sidebar del libro */
+        .book-sidebar {
+            width: 380px;
+            background: linear-gradient(180deg, #1e2a3a 0%, #1a2332 100%);
+            padding: 2rem;
+            overflow-y: auto;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .book-cover-large {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            margin-bottom: 2rem;
+        }
+
+        .book-details h2 {
+            font-family: 'Merriweather', serif;
+            color: white;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .detail-item {
+            margin-bottom: 1.25rem;
+        }
+
+        .detail-label {
+            color: var(--accent-gold);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-value {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+        }
+
+        .book-description-modal {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.7;
+            font-size: 0.95rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-download-large {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-download-large:hover {
+            background: linear-gradient(135deg, var(--primary-purple), var(--deep-purple));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(91, 123, 213, 0.4);
+            color: white;
+        }
+
+        .btn-view-pdf {
+            width: 100%;
+            background: transparent;
+            color: var(--accent-gold);
+            border: 2px solid var(--accent-gold);
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-view-pdf:hover {
+            background: var(--accent-gold);
+            color: var(--dark-bg);
+            transform: translateY(-2px);
+        }
+
+        /* Visor de contenido */
+        .content-container {
+            flex: 1;
+            background: #2a3544;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            overflow: hidden;
+        }
+
+        .book-preview-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
         }
 
         .pdf-viewer {
             width: 100%;
-            height: 75vh;
+            height: 100%;
             border: none;
         }
 
-        .modal-footer {
-            background: #f8f9fa;
-            border: none;
-            padding: 1.5rem;
+        .content-view-hidden {
+            display: none;
         }
 
+        /* No results */
         .no-results {
             text-align: center;
-            padding: 4rem 2rem;
-            color: white;
+            padding: 6rem 2rem;
         }
 
-        .no-results i {
-            font-size: 5rem;
-            margin-bottom: 1rem;
-            opacity: 0.7;
+        .no-results-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            background: linear-gradient(135deg, var(--light-lavender), rgba(139, 111, 176, 0.1));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .no-results-icon i {
+            font-size: 3.5rem;
+            color: var(--primary-purple);
+            opacity: 0.6;
         }
 
         .no-results h3 {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
+            font-family: 'Merriweather', serif;
+            font-size: 1.875rem;
+            color: var(--deep-purple);
+            margin-bottom: 0.75rem;
+            font-weight: 700;
         }
 
+        .no-results p {
+            color: var(--text-medium);
+            font-size: 1.05rem;
+        }
+
+        /* Footer */
         .footer {
-            background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 4rem;
+            background: linear-gradient(135deg, var(--deep-purple) 0%, #3a3256 100%);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 3.5rem 0 2.5rem 0;
+            margin-top: 6rem;
+            border-top: 4px solid var(--accent-gold);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 70% 50%, rgba(139, 111, 176, 0.1) 0%, transparent 50%);
+        }
+
+        .footer-ornament {
+            width: 70px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+            margin: 0 auto 2rem auto;
+            position: relative;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 300;
+            position: relative;
+        }
+
+        .footer-brand {
+            color: var(--accent-gold);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .book-sidebar {
+                width: 320px;
+            }
+
+            .modal-xl {
+                max-width: 98vw;
+            }
+
+            .modal-content {
+                height: 98vh;
+            }
+
+            .modal-body {
+                height: calc(98vh - 120px);
+            }
         }
 
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
+            .logo-text {
+                font-size: 2.5rem;
             }
 
-            .book-cover-container {
-                height: 280px;
+            .logo-subtitle {
+                font-size: 1rem;
             }
 
-            .book-footer {
+            .section-title {
+                font-size: 1.75rem;
+            }
+
+            .header-main {
+                padding: 3rem 0;
+            }
+
+            .modal-body {
                 flex-direction: column;
             }
 
-            .pdf-viewer {
+            .book-sidebar {
+                width: 100%;
+                max-height: 40vh;
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .pdf-container {
                 height: 60vh;
+            }
+
+            .content-container {
+                height: 60vh;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .search-input {
+                padding: 1.125rem 4rem 1.125rem 1.5rem;
+                font-size: 0.95rem;
             }
         }
     </style>
 </head>
 <body>
-
     <div class="header">
-        <div class="container text-center">
-            <h1><i class="bi bi-book-half"></i> Biblioteca Lunar</h1>
-            <p>Abre un libro, abre un universo</p>
+        <div class="header-top">
+            <div class="container text-center">
+                <p>La Biblioteca Digital de América</p>
+            </div>
         </div>
-    </div>
-
-    <div class="search-container">
-        <div class="container">
-            <div class="search-wrapper">
-                <i class="bi bi-search search-icon"></i>
-                <input 
-                    type="text" 
-                    class="search-input" 
-                    id="searchInput" 
-                    placeholder="Buscar por título o autor...">
+        <div class="header-main">
+            <div class="container text-center">
+                <div class="header-ornament"></div>
+                <h1 class="logo-text">BIBLIOTECA LUNAR</h1>
+                <p class="logo-subtitle">Abre un libro, abre un universo</p>
             </div>
         </div>
     </div>
 
-    <div class="books-container">
-        <div class="row g-4" id="booksContainer"></div>
-        <div id="noResults" class="no-results d-none">
-            <i class="bi bi-emoji-frown"></i>
-            <h3>No se encontraron resultados</h3>
-            <p>Intenta con otros términos de búsqueda</p>
+    <div class="search-section">
+        <div class="container">
+            <div class="search-wrapper">
+                <div class="search-box">
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        id="searchInput" 
+                        placeholder="Buscar por título, autor o tema...">
+                    <button class="search-btn">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="books-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2 class="section-title">Colección Literaria</h2>
+                <p class="section-subtitle">Descubre nuestra selección de obras destacadas</p>
+            </div>
+            
+            <div class="books-grid" id="booksContainer"></div>
+            
+            <div id="noResults" class="no-results d-none">
+                <div class="no-results-icon">
+                    <i class="bi bi-book"></i>
+                </div>
+                <h3>No se encontraron resultados</h3>
+                <p>Intenta con otros términos de búsqueda</p>
+            </div>
         </div>
     </div>
 
@@ -385,27 +785,24 @@
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="pdfModalLabel">
-                        <i class="bi bi-file-pdf"></i> Visualizador de PDF
-                    </h5>
+                    <h5 class="modal-title" id="pdfModalLabel">Visualizador de Documento</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <embed id="pdfViewer" class="pdf-viewer" type="application/pdf">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <a id="downloadPdfBtn" href="#" class="btn btn-primary" download>
-                        <i class="bi bi-download"></i> Descargar PDF
-                    </a>
+                    <div class="book-sidebar" id="bookSidebar"></div>
+                    <div class="content-container" id="contentContainer">
+                        <img id="bookPreview" class="book-preview-image" alt="Vista previa del libro">
+                        <embed id="pdfViewer" class="pdf-viewer content-view-hidden" type="application/pdf">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="footer">
-        <div class="container">
-            <p class="mb-0">© 2025 Biblioteca Virtual - Todos los derechos reservados L&M</p>
+        <div class="container text-center">
+            <div class="footer-ornament"></div>
+            <p>© 2025 <span class="footer-brand">Biblioteca Lunar</span> — Todos los derechos reservados L&M</p>
         </div>
     </div>
 
@@ -417,72 +814,82 @@
                 title: "Tu reflejo por el espejo",
                 author: "Escritor Nocturna",
                 year: "2025",
-                description: "C1",
+                description: "Una obra fascinante que explora los misterios del reflejo y la identidad a través de una narrativa cautivadora.",
                 file: "Tu reflejo por el espejo.pdf",
-                cover: "lis.png"
-            },{
+                cover: "lis.png",
+                pages: "376"
+            },
+            {
                 title: "Una chica de noche",
                 author: "Abi Sandoval",
                 year: "2025",
-                description: "L1",
+                description: "Una historia envolvente sobre el amor, los secretos y las decisiones que cambian vidas.",
                 file: "Una chica de noche.pdf",
-                cover: "Una chica de noche.jpg"
+                cover: "Una chica de noche.jpg",
+                pages: "284"
             },
             {
                 title: "Medio Tiempo",
                 author: "Escritor Nocturno",
                 year: "2025",
-                description: "Libro de Romance.",
+                description: "Libro de Romance que narra una historia de segundas oportunidades y nuevos comienzos.",
                 file: "Tiempo medio.pdf",
-                cover: "Medio tiempo.png"
+                cover: "Medio tiempo.png",
+                pages: "312"
             },
             {
                 title: "Destello de Luz",
                 author: "Escritor Nocturno",
                 year: "2025",
-                description: "Libro de Romance.",
+                description: "Una novela romántica que ilumina los momentos más oscuros con esperanza y amor verdadero.",
                 file: "Destello de Luz.pdf",
-                cover: "Destello de Luz.png"
+                cover: "Destello de Luz.png",
+                pages: "298"
             },
             {
                 title: "Abrazos que Hablan",
                 author: "Escritor Nocturno",
                 year: "2025",
-                description: "Poesía",
+                description: "Colección de poesía que celebra el poder del contacto humano y las emociones compartidas.",
                 file: "Abrazos que Hablan.pdf",
-                cover: "Poema.png"
+                cover: "Poema.png",
+                pages: "156"
             },
             {
                 title: "I Love",
                 author: "Escritor Nocturno",
                 year: "2025",
-                description: "L1",
+                description: "Una exploración profunda del amor en todas sus formas y manifestaciones.",
                 file: "I LOVE.pdf",
-                cover: "I LOVE.jpg"
+                cover: "I LOVE.jpg",
+                pages: "224"
             },
-             {
+            {
                 title: "Tapestry de Amor Realidad y Fantasía en Un Solo Latido",
                 author: "Escritor Nocturno",
                 year: "2025",
-                description: "L2",
+                description: "Un tapiz literario que entrelaza lo real y lo imaginario en una danza romántica única.",
                 file: "Tapestry de Amor Realidad y Fantasía en Un Solo Latido.pdf",
-                cover: "Tapestry de Amor Realidad y Fantasía en Un Solo Latido.png"
+                cover: "Tapestry de Amor Realidad y Fantasía en Un Solo Latido.png",
+                pages: "342"
             },
             {
                 title: "La calma antes de lo incierto",
                 author: "Escritor Nocturno",
                 year: "2025",
-                description: "L3",
+                description: "Una reflexión sobre los momentos de quietud que preceden a los grandes cambios de la vida.",
                 file: "La calma antes de lo incierto.pdf",
-                cover: "La calma antes de lo incierto.jpg"
+                cover: "La calma antes de lo incierto.jpg",
+                pages: "267"
             },
             {
                 title: "Ella y la banca que no olvida",
                 author: "Escritor Nocturno",
                 year: "2025",
-                description: "L4",
+                description: "Una historia emotiva sobre la memoria, los recuerdos y los lugares que guardan nuestras historias.",
                 file: "Ella y la banca que no olvida.pdf",
-                cover: "Ella y la banca que no olvida.jpg"
+                cover: "Ella y la banca que no olvida.jpg",
+                pages: "291"
             }
         ];
 
@@ -500,62 +907,117 @@
             noResults.classList.add('d-none');
             
             booksToRender.forEach(book => {
-                const col = document.createElement('div');
-                col.className = 'col-12 col-md-6 col-lg-4';
+                const card = document.createElement('div');
                 
                 const coverHTML = book.cover && book.cover.trim() !== '' 
-                    ? `<img src="${book.cover}" alt="${book.title}" class="book-cover" onerror="this.parentElement.innerHTML='<div class=book-cover-fallback><i class=\\'bi bi-book-fill book-icon-large\\'></i></div>'">
-                       <div class="book-cover-overlay">
-                           <span class="overlay-text"><i class="bi bi-eye"></i> Ver libro</span>
-                       </div>`
+                    ? `<img src="${book.cover}" alt="${book.title}" class="book-cover-img" onerror="this.parentElement.innerHTML='<div class=book-cover-fallback><i class=\\'bi bi-book fallback-icon\\'></i><div class=fallback-title>${book.title}</div></div>'">
+                       <div class="book-badge">Nuevo</div>`
                     : `<div class="book-cover-fallback">
-                           <i class="bi bi-book-fill book-icon-large"></i>
+                           <i class="bi bi-book fallback-icon"></i>
+                           <div class="fallback-title">${book.title}</div>
                        </div>`;
                 
-                col.innerHTML = `
-                    <div class="book-card">
-                        <div class="book-cover-container">
-                            ${coverHTML}
-                        </div>
-                        <div class="book-body">
-                            <h3 class="book-title">${book.title}</h3>
-                            <div class="book-author">
-                                <i class="bi bi-person-fill"></i>
-                                ${book.author}
-                            </div>
-                            <div class="book-year">
-                                <i class="bi bi-calendar-event"></i>
-                                ${book.year}
-                            </div>
-                            <p class="book-description">${book.description}</p>
-                            <div class="book-footer">
-                                <button class="btn-view" onclick="openPdf('${book.file}', '${book.title}')">
-                                    <i class="bi bi-eye"></i> Ver PDF
-                                </button>
-                                <a href="${book.file}" class="btn-download" download="${book.title}.pdf">
-                                    <i class="bi bi-download"></i> Descargar
-                                </a>
-                            </div>
-                        </div>
+                card.className = 'book-card';
+                card.onclick = () => openPdf(book);
+                card.innerHTML = `
+                    <div class="book-cover-wrapper">
+                        ${coverHTML}
+                    </div>
+                    <div class="book-info">
+                        <h3 class="book-title-text">${book.title}</h3>
+                        <div class="book-author-text">${book.author}</div>
+                        <div class="book-year-text">${book.year}</div>
                     </div>
                 `;
                 
-                container.appendChild(col);
+                container.appendChild(card);
             });
         }
 
-        function openPdf(filename, title) {
+        function openPdf(book) {
             const pdfViewer = document.getElementById('pdfViewer');
+            const bookPreview = document.getElementById('bookPreview');
             const modalTitle = document.getElementById('pdfModalLabel');
-            const downloadBtn = document.getElementById('downloadPdfBtn');
+            const sidebar = document.getElementById('bookSidebar');
             
-            pdfViewer.src = filename;
-            modalTitle.innerHTML = `<i class="bi bi-file-pdf"></i> ${title}`;
-            downloadBtn.href = filename;
-            downloadBtn.download = `${title}.pdf`;
+            // Configurar título
+            modalTitle.textContent = book.title;
+            
+            // Mostrar imagen de portada, ocultar PDF
+            if (book.cover && book.cover.trim() !== '') {
+                bookPreview.src = book.cover;
+                bookPreview.classList.remove('content-view-hidden');
+                pdfViewer.classList.add('content-view-hidden');
+            } else {
+                bookPreview.classList.add('content-view-hidden');
+                pdfViewer.classList.add('content-view-hidden');
+            }
+            
+            // Configurar sidebar con información del libro
+            const coverImg = book.cover && book.cover.trim() !== '' 
+                ? `<img src="${book.cover}" alt="${book.title}" class="book-cover-large" onerror="this.style.display='none'">`
+                : `<div style="width: 100%; aspect-ratio: 2/3; background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem;">
+                       <i class="bi bi-book" style="font-size: 4rem; color: white;"></i>
+                   </div>`;
+            
+            sidebar.innerHTML = `
+                ${coverImg}
+                <div class="book-details">
+                    <h2>${book.title}</h2>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Autor</div>
+                        <div class="detail-value">${book.author}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Año</div>
+                        <div class="detail-value">${book.year}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Páginas</div>
+                        <div class="detail-value">${book.pages || 'N/A'}</div>
+                    </div>
+                    
+                    <div class="book-description-modal">
+                        ${book.description}
+                    </div>
+                    
+                    <button class="btn-view-pdf" onclick="togglePdfView('${book.file}')">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                        <span>Ver PDF</span>
+                    </button>
+                    
+                    <a href="${book.file}" class="btn-download-large" download="${book.title}.pdf">
+                        <i class="bi bi-download"></i>
+                        <span>Descargar PDF</span>
+                    </a>
+                </div>
+            `;
             
             const modal = new bootstrap.Modal(document.getElementById('pdfModal'));
             modal.show();
+        }
+
+        function togglePdfView(pdfFile) {
+            const pdfViewer = document.getElementById('pdfViewer');
+            const bookPreview = document.getElementById('bookPreview');
+            const btnViewPdf = document.querySelector('.btn-view-pdf');
+            
+            if (pdfViewer.classList.contains('content-view-hidden')) {
+                // Mostrar PDF
+                pdfViewer.src = pdfFile;
+                pdfViewer.classList.remove('content-view-hidden');
+                bookPreview.classList.add('content-view-hidden');
+                btnViewPdf.innerHTML = '<i class="bi bi-image"></i><span>Ver Portada</span>';
+            } else {
+                // Mostrar portada
+                pdfViewer.src = '';
+                pdfViewer.classList.add('content-view-hidden');
+                bookPreview.classList.remove('content-view-hidden');
+                btnViewPdf.innerHTML = '<i class="bi bi-file-earmark-pdf"></i><span>Ver PDF</span>';
+            }
         }
 
         function searchBooks(query) {
@@ -578,8 +1040,17 @@
             searchBooks(e.target.value);
         });
 
+        document.querySelector('.search-btn').addEventListener('click', function() {
+            searchBooks(document.getElementById('searchInput').value);
+        });
+
         document.getElementById('pdfModal').addEventListener('hidden.bs.modal', function() {
             document.getElementById('pdfViewer').src = '';
+            document.getElementById('bookPreview').src = '';
+            const btnViewPdf = document.querySelector('.btn-view-pdf');
+            if (btnViewPdf) {
+                btnViewPdf.innerHTML = '<i class="bi bi-file-earmark-pdf"></i><span>Ver PDF</span>';
+            }
         });
 
         document.addEventListener('DOMContentLoaded', function() {
