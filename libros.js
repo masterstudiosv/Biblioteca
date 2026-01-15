@@ -1,5 +1,13 @@
 const books = [
             {
+                title: "Destello",
+                author: "Escritor Nocturna",
+                year: "2026",
+                description: "Un pedacito de lo que fuimos al inicio y de lo que somos ahora, contado desde lo que siento, sin prisa y con verdad.",
+                file: "Aby pequeeee.pdf",
+                cover: "sdd.j"
+            },
+            {
                 title: "Tu reflejo por el espejo",
                 author: "Escritor Nocturna",
                 year: "2025",
