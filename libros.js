@@ -12,7 +12,7 @@ const books = [
                 author: "Escritor Nocturn0",
                 year: "2025",
                 description: "Una obra fascinante que explora los misterios del reflejo y la identidad a través de una narrativa cautivadora.",
-                file: "Tu reflejo por el espejo.pdf",
+                file: "libros/Tu reflejo por el espejo.pdf",
                 cover: "lis.png"
             },
             {
@@ -20,7 +20,7 @@ const books = [
                 author: "Abi Sandoval",
                 year: "2025",
                 description: "Una historia envolvente sobre el amor, los secretos y las decisiones que cambian vidas.",
-                file: "Una chica de noche.pdf",
+                file: "libros/Una chica de noche.pdf",
                 cover: "Una chica de noche.jpg"
             },
             {
@@ -28,7 +28,7 @@ const books = [
                 author: "Escritor Nocturno",
                 year: "2025",
                 description: "Libro de Romance que narra una historia de segundas oportunidades y nuevos comienzos.",
-                file: "Tiempo medio.pdf",
+                file: "libros/Tiempo medio.pdf",
                 cover: "Medio tiempo.png"
             },
             {
@@ -36,7 +36,7 @@ const books = [
                 author: "Escritor Nocturno",
                 year: "2025",
                 description: "Una novela romántica que ilumina los momentos más oscuros con esperanza y amor verdadero.",
-                file: "Destello de Luz.pdf",
+                file: "libros/Destello de Luz.pdf",
                 cover: "Destello de Luz.png"
             },
             {
@@ -44,7 +44,7 @@ const books = [
                 author: "Escritor Nocturno",
                 year: "2025",
                 description: "Colección de poesía que celebra el poder del contacto humano y las emociones compartidas.",
-                file: "Abrazos que Hablan.pdf",
+                file: "libros/Abrazos que Hablan.pdf",
                 cover: "Poema.png"
             },
             {
@@ -52,7 +52,7 @@ const books = [
                 author: "Escritor Nocturno",
                 year: "2025",
                 description: "Una exploración profunda del amor en todas sus formas y manifestaciones.",
-                file: "I LOVE.pdf",
+                file: "libros/I LOVE.pdf",
                 cover: "I LOVE.jpg"
             },
             {
@@ -60,7 +60,7 @@ const books = [
                 author: "Escritor Nocturno",
                 year: "2025",
                 description: "Un tapiz literario que entrelaza lo real y lo imaginario en una danza romántica única.",
-                file: "Tapestry de Amor Realidad y Fantasía en Un Solo Latido.pdf",
+                file: "libros/Tapestry de Amor Realidad y Fantasía en Un Solo Latido.pdf",
                 cover: "Tapestry de Amor Realidad y Fantasía en Un Solo Latido.png"
             },
             {
@@ -68,7 +68,7 @@ const books = [
                 author: "Escritor Nocturno",
                 year: "2025",
                 description: "Una reflexión sobre los momentos de quietud que preceden a los grandes cambios de la vida.",
-                file: "La calma antes de lo incierto.pdf",
+                file: "libros/La calma antes de lo incierto.pdf",
                 cover: "La calma antes de lo incierto.jpg"
             },
             {
@@ -76,7 +76,7 @@ const books = [
                 author: "Escritor Nocturno",
                 year: "2025",
                 description: "Una historia emotiva sobre la memoria, los recuerdos y los lugares que guardan nuestras historias.",
-                file: "Ella y la banca que no olvida.pdf",
+                file: "libros/Ella y la banca que no olvida.pdf",
                 cover: "Ella y la banca que no olvida.jpg"
             }
         ];
