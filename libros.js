@@ -1,7 +1,7 @@
 const books = [
             {
                 title: "Destello",
-                author: "Escritor Nocturna",
+                author: "Escritor Nocturno",
                 year: "2026",
                 description: "Un pedacito de lo que fuimos al inicio y de lo que somos ahora, contado desde lo que siento, sin prisa y con verdad.",
                 file: "libros/Aby pequeeee.pdf",
@@ -9,7 +9,7 @@ const books = [
             },
             {
                 title: "Tu reflejo por el espejo",
-                author: "Escritor Nocturna",
+                author: "Escritor Nocturn0",
                 year: "2025",
                 description: "Una obra fascinante que explora los misterios del reflejo y la identidad a través de una narrativa cautivadora.",
                 file: "Tu reflejo por el espejo.pdf",
