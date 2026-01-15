@@ -5,7 +5,7 @@ const books = [
                 year: "2026",
                 description: "Un pedacito de lo que fuimos al inicio y de lo que somos ahora, contado desde lo que siento, sin prisa y con verdad.",
                 file: "libros/Aby pequeeee.pdf",
-                cover: "imagenes/sdd.j"
+                cover: "imagenes/sdd.jpg"
             },
             {
                 title: "Tu reflejo por el espejo",
