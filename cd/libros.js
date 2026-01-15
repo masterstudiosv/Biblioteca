@@ -13,7 +13,7 @@ const books = [
                 year: "2025",
                 description: "Una obra fascinante que explora los misterios del reflejo y la identidad a través de una narrativa cautivadora.",
                 file: "libros/Tu reflejo por el espejo.pdf",
-                cover: "lis.png"
+                cover: "imagenes/lis.png"
             },
             {
                 title: "Una chica de noche",
@@ -21,7 +21,7 @@ const books = [
                 year: "2025",
                 description: "Una historia envolvente sobre el amor, los secretos y las decisiones que cambian vidas.",
                 file: "libros/Una chica de noche.pdf",
-                cover: "Una chica de noche.jpg"
+                cover: "imagenes/Una chica de noche.jpg"
             },
             {
                 title: "Medio Tiempo",
@@ -29,7 +29,7 @@ const books = [
                 year: "2025",
                 description: "Libro de Romance que narra una historia de segundas oportunidades y nuevos comienzos.",
                 file: "libros/Tiempo medio.pdf",
-                cover: "Medio tiempo.png"
+                cover: "imagenes/Medio tiempo.png"
             },
             {
                 title: "Destello de Luz",
@@ -37,7 +37,7 @@ const books = [
                 year: "2025",
                 description: "Una novela romántica que ilumina los momentos más oscuros con esperanza y amor verdadero.",
                 file: "libros/Destello de Luz.pdf",
-                cover: "Destello de Luz.png"
+                cover: "imagenes/Destello de Luz.png"
             },
             {
                 title: "Abrazos que Hablan",
@@ -45,7 +45,7 @@ const books = [
                 year: "2025",
                 description: "Colección de poesía que celebra el poder del contacto humano y las emociones compartidas.",
                 file: "libros/Abrazos que Hablan.pdf",
-                cover: "Poema.png"
+                cover: "imagenes/Poema.png"
             },
             {
                 title: "I Love",
@@ -53,7 +53,7 @@ const books = [
                 year: "2025",
                 description: "Una exploración profunda del amor en todas sus formas y manifestaciones.",
                 file: "libros/I LOVE.pdf",
-                cover: "I LOVE.jpg"
+                cover: "imagenes/I LOVE.jpg"
             },
             {
                 title: "Tapestry de Amor Realidad y Fantasía en Un Solo Latido",
@@ -61,7 +61,7 @@ const books = [
                 year: "2025",
                 description: "Un tapiz literario que entrelaza lo real y lo imaginario en una danza romántica única.",
                 file: "libros/Tapestry de Amor Realidad y Fantasía en Un Solo Latido.pdf",
-                cover: "Tapestry de Amor Realidad y Fantasía en Un Solo Latido.png"
+                cover: "imagenes/Tapestry de Amor Realidad y Fantasía en Un Solo Latido.png"
             },
             {
                 title: "La calma antes de lo incierto",
@@ -69,7 +69,7 @@ const books = [
                 year: "2025",
                 description: "Una reflexión sobre los momentos de quietud que preceden a los grandes cambios de la vida.",
                 file: "libros/La calma antes de lo incierto.pdf",
-                cover: "La calma antes de lo incierto.jpg"
+                cover: "imagenes/La calma antes de lo incierto.jpg"
             },
             {
                 title: "Ella y la banca que no olvida",
@@ -77,6 +77,6 @@ const books = [
                 year: "2025",
                 description: "Una historia emotiva sobre la memoria, los recuerdos y los lugares que guardan nuestras historias.",
                 file: "libros/Ella y la banca que no olvida.pdf",
-                cover: "Ella y la banca que no olvida.jpg"
+                cover: "imagenes/Ella y la banca que no olvida.jpg"
             }
         ];
