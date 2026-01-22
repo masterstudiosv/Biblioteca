@@ -1,6 +1,6 @@
 const books = [
             {
-                title: "El Oso Que Aprendió A Viajar",
+                title: "Nosotros en Mil Versiones",
                 author: "Escritor Nocturno",
                 year: "2026",
                 description: "Una historia de amor en constante cambio. Elegirnos, crecer y seguir siendo nosotros, en mil versiones.",
