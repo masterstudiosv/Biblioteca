@@ -3,6 +3,14 @@ const books = [
                 title: "El Oso Que Aprendió A Viajar",
                 author: "Escritor Nocturno",
                 year: "2026",
+                description: "Una historia de amor en constante cambio. Elegirnos, crecer y seguir siendo nosotros, en mil versiones.",
+                file: "libros/Nosotros en Mil Versiones.pdf",
+                cover: "imágenes/nosotros.png"
+            },
+            {
+                title: "El Oso Que Aprendió A Viajar",
+                author: "Escritor Nocturno",
+                year: "2026",
                 description: "Un recuerdo que aprendió a caminar, a transformarse y a quedarse, contado desde lo más sincero de sentir.",
                 file: "libros/El Oso Que Aprendió A Viajar.pdf",
                 cover: "imágenes/oso.png"
