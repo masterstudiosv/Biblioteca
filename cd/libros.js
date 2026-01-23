@@ -6,7 +6,7 @@ const books = [
                 description: "Un recorrido íntimo por los sueños compartidos, las decisiones conscientes y el amor que se proyecta hacia lo que vendrá. Porque amar también es planear.",
                 file: "libros/El Futuro Planeado A Tu Lado.pdf",
                 cover: "imágenes/gato.png"
-            }
+            },
             {
                 title: "Nosotros en Mil Versiones",
                 author: "Escritor Nocturno",
