@@ -1,5 +1,13 @@
 const books = [
             {
+                title: "8760 Horas de Amor",
+                author: "Escritor Nocturno",
+                year: "2026",
+                description: "Recordar es como volver a vivir.",
+                file: "libros/8760 Horas de Amor.pdf",
+                cover: "imágenes/8760 Horas de Amor.png"
+            },
+            {
                 title: "El Futuro Planeado A Tu Lado",
                 author: "Escritor Nocturno",
                 year: "2026",
