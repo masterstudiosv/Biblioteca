@@ -135,6 +135,7 @@
         detailOverlay.classList.add('is-open');
         detailOverlay.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
 
         // Mueve el foco al panel para lectores de pantalla y navegación por teclado
         document.getElementById('detailClose').focus();
@@ -145,6 +146,7 @@
         detailOverlay.setAttribute('aria-hidden', 'true');
         if (!readerOverlayIsOpen()) {
             document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
         }
         if (lastFocusedElement) lastFocusedElement.focus();
     }
@@ -167,6 +169,7 @@
     const readerLoading = document.getElementById('readerLoading');
     const readerLoadingText = readerLoading.querySelector('p');
     const readerDownload = document.getElementById('readerDownload');
+    const readerCanvasWrap = document.querySelector('.reader-canvas-wrap');
     const canvas = document.getElementById('pdfCanvas');
     const ctx = canvas.getContext('2d');
     const pdfFrame = document.getElementById('pdfFrame');
@@ -174,18 +177,72 @@
     const zoomLevelEl = document.getElementById('zoomLevel');
     const prevBtn = document.getElementById('prevPage');
     const nextBtn = document.getElementById('nextPage');
+    const fullscreenBtn = document.getElementById('readerFullscreen');
 
     let currentPdf = null;
     let currentPage = 1;
     let totalPages = 1;
-    let currentScale = 1.15;
-    const MIN_SCALE = 0.5;
-    const MAX_SCALE = 2.6;
+
+    // baseScale = el zoom calculado para que la página quepa entera en la
+    // pantalla, sin cortes. zoomFactor es lo que el usuario ajusta con +/-,
+    // relativo a ese "ajustar a pantalla" (1 = 100% = página completa visible).
+    let baseScale = 1;
+    let zoomFactor = 1;
+    const MIN_ZOOM = 0.4;
+    const MAX_ZOOM = 3;
     let renderTask = null;
+    let resizeTimeout = null;
 
     function readerOverlayIsOpen() {
         return readerOverlay.classList.contains('is-open');
     }
+
+    /* ---------- Pantalla completa ---------- */
+    const fsSupported = !!(readerOverlay.requestFullscreen || readerOverlay.webkitRequestFullscreen);
+    if (fsSupported) {
+        readerOverlay.classList.add('fullscreen-supported');
+    }
+
+    function isFullscreen() {
+        return !!(document.fullscreenElement || document.webkitFullscreenElement);
+    }
+
+    function updateFullscreenIcon() {
+        if (!fullscreenBtn) return;
+        const icon = fullscreenBtn.querySelector('i');
+        if (isFullscreen()) {
+            icon.className = 'bi bi-fullscreen-exit';
+            fullscreenBtn.setAttribute('aria-label', 'Salir de pantalla completa');
+        } else {
+            icon.className = 'bi bi-arrows-fullscreen';
+            fullscreenBtn.setAttribute('aria-label', 'Pantalla completa');
+        }
+    }
+
+    function toggleFullscreen() {
+        if (!isFullscreen()) {
+            const req = readerOverlay.requestFullscreen || readerOverlay.webkitRequestFullscreen;
+            if (req) req.call(readerOverlay).catch(() => {});
+        } else {
+            const exit = document.exitFullscreen || document.webkitExitFullscreen;
+            if (exit) exit.call(document).catch(() => {});
+        }
+    }
+
+    if (fullscreenBtn) {
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
+    }
+
+    ['fullscreenchange', 'webkitfullscreenchange'].forEach((evt) => {
+        document.addEventListener(evt, () => {
+            updateFullscreenIcon();
+            // El área disponible cambia al entrar/salir de pantalla completa,
+            // así que recalculamos el ajuste para que la página siga cabiendo entera.
+            if (readerOverlayIsOpen() && currentPdf) {
+                setTimeout(() => renderPage(currentPage), 120);
+            }
+        });
+    });
 
     function openReader(file, title) {
         readerTitleEl.textContent = title;
@@ -196,6 +253,7 @@
         readerOverlay.classList.remove('is-native');
         readerOverlay.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
 
         readerLoading.classList.remove('is-hidden');
         readerLoadingText.textContent = 'Encendiendo la lámpara…';
@@ -205,7 +263,7 @@
         pageIndicator.textContent = 'Página 1 de 1';
 
         currentPage = 1;
-        currentScale = 1.15;
+        zoomFactor = 1;
         updateZoomLabel();
 
         if (!window.pdfjsLib) {
@@ -242,11 +300,16 @@
     }
 
     function closeReader() {
+        if (isFullscreen()) {
+            const exit = document.exitFullscreen || document.webkitExitFullscreen;
+            if (exit) exit.call(document).catch(() => {});
+        }
         readerOverlay.classList.remove('is-open');
         readerOverlay.classList.remove('is-native');
         readerOverlay.setAttribute('aria-hidden', 'true');
         if (!detailOverlay.classList.contains('is-open')) {
             document.body.style.overflow = '';
+            document.documentElement.style.overflow = '';
         }
         if (renderTask) {
             renderTask.cancel();
@@ -256,16 +319,29 @@
         pdfFrame.src = '';
     }
 
+    /* Calcula el zoom necesario para que la página quepa completa,
+       sin cortes, dentro del espacio disponible del lector. */
+    function computeFitScale(page) {
+        const availW = Math.max(readerCanvasWrap.clientWidth - 16, 80);
+        const availH = Math.max(readerCanvasWrap.clientHeight - 16, 80);
+        const unscaled = page.getViewport({ scale: 1 });
+        return Math.min(availW / unscaled.width, availH / unscaled.height);
+    }
+
     function renderPage(num) {
         if (!currentPdf) return;
         canvas.classList.add('is-rendering');
 
         currentPdf.getPage(num).then((page) => {
-            const viewport = page.getViewport({ scale: currentScale * (window.devicePixelRatio || 1) });
+            baseScale = computeFitScale(page);
+            const effectiveScale = baseScale * zoomFactor;
+            const dpr = window.devicePixelRatio || 1;
+            const viewport = page.getViewport({ scale: effectiveScale * dpr });
+
             canvas.width = viewport.width;
             canvas.height = viewport.height;
-            canvas.style.width = (viewport.width / (window.devicePixelRatio || 1)) + 'px';
-            canvas.style.height = (viewport.height / (window.devicePixelRatio || 1)) + 'px';
+            canvas.style.width = (viewport.width / dpr) + 'px';
+            canvas.style.height = (viewport.height / dpr) + 'px';
 
             if (renderTask) {
                 renderTask.cancel();
@@ -288,7 +364,7 @@
     }
 
     function updateZoomLabel() {
-        zoomLevelEl.textContent = Math.round((currentScale / 1.15) * 100) + '%';
+        zoomLevelEl.textContent = Math.round(zoomFactor * 100) + '%';
     }
 
     prevBtn.addEventListener('click', () => {
@@ -306,13 +382,13 @@
     });
 
     document.getElementById('zoomIn').addEventListener('click', () => {
-        currentScale = Math.min(MAX_SCALE, currentScale + 0.18);
+        zoomFactor = Math.min(MAX_ZOOM, +(zoomFactor + 0.15).toFixed(2));
         updateZoomLabel();
         renderPage(currentPage);
     });
 
     document.getElementById('zoomOut').addEventListener('click', () => {
-        currentScale = Math.max(MIN_SCALE, currentScale - 0.18);
+        zoomFactor = Math.max(MIN_ZOOM, +(zoomFactor - 0.15).toFixed(2));
         updateZoomLabel();
         renderPage(currentPage);
     });
@@ -327,6 +403,14 @@
         } else if (detailOverlay.classList.contains('is-open')) {
             if (e.key === 'Escape') closeBookDetail();
         }
+    });
+
+    // Al rotar el móvil o cambiar el tamaño de la ventana, recalculamos el
+    // ajuste para que la página siga viéndose completa y bien centrada.
+    window.addEventListener('resize', () => {
+        if (!readerOverlayIsOpen() || !currentPdf) return;
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => renderPage(currentPage), 150);
     });
 
     /* ============================================================
