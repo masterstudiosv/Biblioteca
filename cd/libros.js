@@ -4,7 +4,7 @@ const books = [
                 author: "Escritor Nocturno",
                 year: "2026",
                 description: "Mi plana favorita.",
-                file: "libros/MI PEQUEÑO GIRASOL.pdf",
+                file: "libros/MI PEQUEÑO GIRASOLL.pdf",
                 cover: "imágenes/MI PEQUEÑO GIRASOLL.jpg"
             },
              {
