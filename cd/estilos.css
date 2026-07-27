@@ -583,7 +583,7 @@ button {
 .detail-overlay {
     position: fixed;
     inset: 0;
-    z-index: 50;
+    z-index: 9000;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -802,13 +802,22 @@ button {
 .reader-overlay {
     position: fixed;
     inset: 0;
-    z-index: 60;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 9999;
     display: flex;
     flex-direction: column;
     background: radial-gradient(140% 100% at 50% 0%, #14183a 0%, var(--noche-950) 60%);
     visibility: hidden;
     opacity: 0;
+    overscroll-behavior: contain;
     transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.reader-overlay:fullscreen,
+.reader-overlay:-webkit-full-screen {
+    height: 100vh;
+    background: var(--noche-950);
 }
 
 .reader-overlay.is-open {
@@ -821,12 +830,16 @@ button {
     align-items: center;
     justify-content: space-between;
     padding: 1rem 1.5rem;
+    padding-top: max(1rem, env(safe-area-inset-top));
+    padding-left: max(1.5rem, env(safe-area-inset-left));
+    padding-right: max(1.5rem, env(safe-area-inset-right));
     background: rgba(8, 10, 21, 0.6);
     border-bottom: 1px solid var(--noche-line);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: 0.6rem;
+    flex-shrink: 0;
 }
 
 .reader-bar-title {
@@ -883,6 +896,10 @@ button {
     color: var(--noche-950);
 }
 
+.reader-overlay:not(.fullscreen-supported) #readerFullscreen {
+    display: none;
+}
+
 .reader-zoom-level {
     font-family: var(--font-ui);
     font-size: 0.8rem;
@@ -901,19 +918,20 @@ button {
 .reader-stage {
     position: relative;
     flex: 1;
+    min-height: 0;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: auto;
-    padding: 2rem 1rem;
+    overflow: hidden;
+    padding: 1.25rem;
 }
 
 .reader-canvas-wrap {
     position: relative;
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 200px;
+    min-height: 0;
 }
 
 .pdf-canvas {
@@ -924,14 +942,15 @@ button {
         0 0 90px rgba(205, 168, 106, 0.08);
     border-radius: 4px;
     max-width: 100%;
+    max-height: 100%;
     transition: opacity 0.25s ease;
 }
 
 .pdf-canvas.is-rendering { opacity: 0.35; }
 
 .pdf-frame {
-    width: min(920px, 86vw);
-    height: 78vh;
+    width: 100%;
+    height: 100%;
     border: none;
     border-radius: 4px;
     background: var(--luna-100);
@@ -986,28 +1005,34 @@ button {
 }
 
 .page-nav {
-    position: relative;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
     flex-shrink: 0;
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(8, 10, 21, 0.55);
     border: 1px solid var(--noche-line);
     color: var(--text-100);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     font-size: 1.1rem;
-    margin: 0 1.25rem;
     transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
-    align-self: center;
 }
+
+.page-nav-prev { left: 0.75rem; }
+.page-nav-next { right: 0.75rem; }
 
 .page-nav:hover:not(:disabled) {
     background: var(--oro-400);
     color: var(--ink);
-    transform: scale(1.08);
+    transform: translateY(-50%) scale(1.08);
 }
 
 .page-nav:disabled {
@@ -1017,11 +1042,13 @@ button {
 
 .reader-footer {
     text-align: center;
-    padding: 0.9rem 0 1.3rem 0;
+    padding: 0.9rem 0.75rem 1.3rem 0.75rem;
+    padding-bottom: max(1.3rem, env(safe-area-inset-bottom));
     font-family: var(--font-ui);
     font-size: 0.82rem;
     color: var(--text-muted);
     letter-spacing: 0.02em;
+    flex-shrink: 0;
 }
 
 /* ============================================================
@@ -1043,14 +1070,42 @@ button {
     .detail-actions { flex-direction: column; }
     .btn-action { min-width: 0; }
     .reader-bar-title span { max-width: 38vw; }
-    .page-nav { width: 40px; height: 40px; margin: 0 0.6rem; }
+    .reader-stage { padding: 0.85rem; }
+    .page-nav { width: 40px; height: 40px; }
+    .page-nav-prev { left: 0.5rem; }
+    .page-nav-next { right: 0.5rem; }
 }
 
 @media (max-width: 576px) {
     .search-input { padding: 1rem 0.6rem; font-size: 0.95rem; }
     .search-icon { margin-left: 1.1rem; }
-    .reader-bar { padding: 0.85rem 1rem; }
-    .reader-bar-title span { max-width: 32vw; }
+
+    /* Barra del lector: título en su propia fila, controles debajo,
+       para que nada se encime ni se salga de la pantalla */
+    .reader-bar {
+        padding: 0.75rem 0.85rem;
+        padding-top: max(0.75rem, env(safe-area-inset-top));
+        padding-left: max(0.85rem, env(safe-area-inset-left));
+        padding-right: max(0.85rem, env(safe-area-inset-right));
+        gap: 0.5rem;
+    }
+    .reader-bar-title { flex: 1 1 100%; }
+    .reader-bar-title span { max-width: 78vw; }
+    .reader-bar-controls {
+        flex: 1 1 100%;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+    }
+    .reader-btn { width: 34px; height: 34px; font-size: 0.85rem; }
+    .reader-divider { display: none; }
+    .reader-zoom-level { min-width: 34px; font-size: 0.75rem; }
+
+    .reader-stage { padding: 0.5rem; }
+    .page-nav { width: 34px; height: 34px; font-size: 0.95rem; }
+    .page-nav-prev { left: 0.35rem; }
+    .page-nav-next { right: 0.35rem; }
+    .reader-footer { font-size: 0.72rem; padding: 0.6rem 0.5rem max(0.9rem, env(safe-area-inset-bottom)); }
 }
 
 @media (prefers-reduced-motion: reduce) {
