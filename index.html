@@ -4,100 +4,160 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca Lunar</title>
+    <meta name="description" content="Biblioteca Lunar — una colección de historias para leer bajo la luz de la luna.">
     <link rel="icon" href="imágenes/imágenes/logo.png" type="image/png">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,500&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;0,7..72,700;1,7..72,400;1,7..72,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
     <link rel="stylesheet" href="cd/estilos.css">
 </head>
 <body>
-    <div class="header">
+
+    <!-- Campo de estrellas decorativo -->
+    <div class="starfield" aria-hidden="true"></div>
+
+    <header class="header">
+        <div class="moon" aria-hidden="true"></div>
         <div class="header-main">
             <div class="container text-center">
                 <div class="header-ornament"></div>
-                <h1 class="logo-text">BIBLIOTECA LUNAR</h1>
+                <p class="eyebrow">Historias para leer bajo la luna</p>
+                <h1 class="logo-text">Biblioteca Lunar</h1>
                 <p class="logo-subtitle">Abre un libro, abre un universo</p>
             </div>
         </div>
-    </div>
+        <div class="header-wave" aria-hidden="true"></div>
+    </header>
 
     <div class="search-section">
         <div class="container">
             <div class="search-wrapper">
                 <div class="search-box">
-                    <input 
-                        type="text" 
-                        class="search-input" 
-                        id="searchInput" 
-                        placeholder="Buscar por título, autor o tema...">
-                    <button class="search-btn">
-                        <i class="bi bi-search"></i>
+                    <i class="bi bi-search search-icon"></i>
+                    <input
+                        type="text"
+                        class="search-input"
+                        id="searchInput"
+                        placeholder="Buscar por título o autor…"
+                        autocomplete="off">
+                    <button class="search-clear" id="searchClear" type="button" aria-label="Limpiar búsqueda">
+                        <i class="bi bi-x-lg"></i>
                     </button>
                 </div>
+                <p class="search-count" id="searchCount"></p>
             </div>
         </div>
     </div>
 
-    <div class="books-section">
+    <main class="books-section">
         <div class="container">
             <div class="section-header text-center">
-                <h2 class="section-title">Colección Literaria</h2>
-                <p class="section-subtitle">Descubre nuestra selección de obras destacadas</p>
+                <span class="section-eyebrow">Colección</span>
+                <h2 class="section-title">Historias Bajo La Luna</h2>
+                <p class="section-subtitle">Toca la portada de un libro para conocer su historia</p>
             </div>
-            
+
             <div class="books-grid" id="booksContainer"></div>
-            
-            <div id="noResults" class="no-results d-none">
+
+            <div id="noResults" class="no-results is-hidden">
                 <div class="no-results-icon">
-                    <i class="bi bi-book"></i>
+                    <i class="bi bi-moon-stars"></i>
                 </div>
-                <h3>No se encontraron resultados</h3>
-                <p>Intenta con otros términos de búsqueda</p>
+                <h3>No hay historias con ese nombre</h3>
+                <p>Prueba buscando otro título o autor</p>
             </div>
         </div>
-    </div>
+    </main>
 
-    <div class="modal fade" id="bookInfoModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="bookInfoModalLabel">Información del Libro</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="book-modal-content" id="bookModalContent"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade modal-fullscreen" id="pdfModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="pdfModalLabel">Visualizador de PDF</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <embed id="pdfViewer" class="pdf-viewer" type="application/pdf">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="footer">
+    <footer class="footer">
         <div class="container text-center">
             <div class="footer-ornament"></div>
-            <p>© 2025 <span class="footer-brand">Biblioteca Lunar</span> — Todos los derechos reservados L&M</p>
+            <p class="footer-brand">Biblioteca Lunar</p>
+            <p class="footer-copy">© 2025 Todos los derechos reservados · L&amp;M</p>
         </div>
-    </div>
+    </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Vista de detalle del libro -->
+    <section class="detail-overlay" id="bookDetail" aria-hidden="true">
+        <div class="detail-backdrop" data-close-detail></div>
+        <div class="detail-panel" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+            <button class="overlay-close" id="detailClose" aria-label="Cerrar">
+                <i class="bi bi-x-lg"></i>
+            </button>
+            <div class="detail-grid">
+                <div class="detail-cover-col">
+                    <div class="detail-cover-frame" id="detailCoverFrame"></div>
+                </div>
+                <div class="detail-info-col">
+                    <span class="detail-eyebrow" id="detailMeta">Escritor Nocturno</span>
+                    <h2 class="detail-title" id="detailTitle"></h2>
+                    <div class="detail-tags">
+                        <span class="detail-tag"><i class="bi bi-feather"></i><span id="detailAuthor"></span></span>
+                        <span class="detail-tag"><i class="bi bi-calendar3"></i><span id="detailYear"></span></span>
+                    </div>
+                    <p class="detail-description" id="detailDescription"></p>
+                    <div class="detail-actions">
+                        <button class="btn-action btn-read" id="detailReadBtn">
+                            <i class="bi bi-book-half"></i>
+                            <span>Leer ahora</span>
+                        </button>
+                        <a class="btn-action btn-download" id="detailDownloadBtn" download>
+                            <i class="bi bi-download"></i>
+                            <span>Descargar</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- Lector de PDF personalizado -->
+    <section class="reader-overlay" id="pdfReader" aria-hidden="true">
+        <header class="reader-bar">
+            <div class="reader-bar-title">
+                <i class="bi bi-moon-stars"></i>
+                <span id="readerTitle">Título del libro</span>
+            </div>
+            <div class="reader-bar-controls">
+                <button class="reader-btn" id="zoomOut" aria-label="Alejar"><i class="bi bi-dash-lg"></i></button>
+                <span class="reader-zoom-level" id="zoomLevel">100%</span>
+                <button class="reader-btn" id="zoomIn" aria-label="Acercar"><i class="bi bi-plus-lg"></i></button>
+                <span class="reader-divider" aria-hidden="true"></span>
+                <a class="reader-btn" id="readerDownload" download aria-label="Descargar"><i class="bi bi-download"></i></a>
+                <button class="reader-btn reader-btn-close" id="readerClose" aria-label="Cerrar lector"><i class="bi bi-x-lg"></i></button>
+            </div>
+        </header>
+
+        <div class="reader-stage" id="readerStage">
+            <button class="page-nav page-nav-prev" id="prevPage" aria-label="Página anterior">
+                <i class="bi bi-chevron-left"></i>
+            </button>
+
+            <div class="reader-canvas-wrap">
+                <div class="reader-loading" id="readerLoading">
+                    <div class="reader-loading-moon"></div>
+                    <p>Encendiendo la lámpara…</p>
+                </div>
+                <canvas id="pdfCanvas" class="pdf-canvas"></canvas>
+                <iframe id="pdfFrame" class="pdf-frame" title="Lector de PDF" style="display:none;"></iframe>
+            </div>
+
+            <button class="page-nav page-nav-next" id="nextPage" aria-label="Página siguiente">
+                <i class="bi bi-chevron-right"></i>
+            </button>
+        </div>
+
+        <footer class="reader-footer">
+            <span id="pageIndicator">Página 1 de 1</span>
+        </footer>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="cd/libros.js" defer></script>
     <script src="cd/script.js" defer></script>
-    
-
-
 
 </body>
 </html>
