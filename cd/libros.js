@@ -1,4 +1,20 @@
 const books = [
+             {
+                title: "Mi pequeño Girasol",
+                author: "Escritor Nocturno",
+                year: "2026",
+                description: "Mi plana favorita.",
+                file: "libros/MI PEQUEÑO GIRASOL.pdf",
+                cover: "imágenes/MI PEQUEÑO GIRASOLL.jpg"
+            },
+             {
+                title: "La Tarde Que Nos Quedamos",
+                author: "Escritor Nocturno",
+                year: "2026",
+                description: "Aquella tarde que fue tan hermosa, como tú.",
+                file: "libros/La_Tarde_Que_Nos_Quedamos.pdf",
+                cover: "imágenes/skl.jpg"
+            },
             {
                 title: "8760 Horas de Amor",
                 author: "Escritor Nocturno",
