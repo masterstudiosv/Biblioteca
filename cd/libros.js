@@ -13,7 +13,7 @@ const books = [
                 year: "2026",
                 description: "Aquella tarde que fue tan hermosa, como tú.",
                 file: "libros/La_Tarde_Que_Nos_Quedamos.pdf",
-                cover: "imágenes/skl.jpg"
+                cover: "imágenes/skl.png"
             },
             {
                 title: "8760 Horas de Amor",
