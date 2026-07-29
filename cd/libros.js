@@ -1,4 +1,12 @@
 const books = [
+            {
+                title: "Las veces que me enamoré de ti",
+                author: "Escritor Nocturno",
+                year: "2026",
+                description: "A veces me gusta imaginar, pensarte y soñarte más de lo cotidiano.",
+                file: "libros/Las_veces_que_me_enamore_de_ti.pdf",
+                cover: "imágenes/imgh.png"
+            },
              {
                 title: "Mi pequeño Girasol",
                 author: "Escritor Nocturno",
